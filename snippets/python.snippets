@@ -1,3 +1,23 @@
 snippet doctest 
-    import doctest
-    doctest.testmode()
+	if __name__ == "__main__":
+		import doctest
+		doctest.testmod()
+
+snippet dec
+	def ${1:name}(func):
+		@functools.wraps(func)
+		def wrapper(*args,**kw):
+			${2: do something}
+			return func(*args,**kw)
+		return wrapper
+
+snippet dec()
+	def ${1:name}(text):
+		def decorator(func):
+			@functools.wraps(func)
+			def wrapper(*args,**kw):
+				${2:do something}
+				return func(*args,**kw)
+			return wrapper
+		return decorator
+
