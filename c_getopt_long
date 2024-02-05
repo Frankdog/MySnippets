@@ -1,0 +1,43 @@
+/*
+在标准的 C 语言库中，getopt 函数本身不直接支持长选项（即以两个破折号 -- 开头的选项，如 --help）。标准的 getopt 主要用于解析短选项（以单个破折号 - 开头，后跟单个字符的选项，如 -h）。
+然而，GNU C 库（glibc）提供了一个扩展版本的 getopt，包括 getopt_long 和 getopt_long_only 函数，这两个函数支持长选项。这意味着在使用 GNU C 库或兼容的环境下编写的程序可以使用这些函数来解析长选项。
+getopt_long 和 getopt_long_only
+getopt_long 函数同时支持短选项和长选项。
+getopt_long_only 函数也支持短选项和长选项，但它允许短选项以长选项的格式传递（即使没有对应的长选项定义，短选项也可以以 -- 开头）。
+这两个函数都定义在 <getopt.h> 头文件中，而不是标准的 <unistd.h>。
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <getopt.h>
+
+int main(int argc, char *argv[]) {
+    int opt;
+    struct option long_options[] = {
+        {"help", no_argument, NULL, 'h'},
+        {"version", no_argument, NULL, 'v'},
+        {"file", required_argument, NULL, 'f'},
+        {NULL, 0, NULL, 0} // 结束标志
+    };
+
+    while ((opt = getopt_long(argc, argv, "hvf:", long_options, NULL)) != -1) {
+        switch (opt) {
+            case 'h':
+                printf("Help Option\n");
+                break;
+            case 'v':
+                printf("Version Option\n");
+                break;
+            case 'f':
+                printf("File Option with value %s\n", optarg);
+                break;
+            case '?':
+                // 错误处理：未知选项或缺少必需的选项参数
+                break;
+            default:
+                break;
+        }
+    }
+
+    return 0;
+}
