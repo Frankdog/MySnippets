@@ -1,3 +1,25 @@
+/*
+在使用 getopt 函数处理命令行参数时，理解其参数定义是非常重要的。这些定义指导 getopt 如何解析命令行选项和参数。下面详细介绍 getopt 的主要参数：
+
+argc 和 argv
+argc（Argument Count）: 表示命令行参数的数量。它是传递给 main 函数的第一个参数。
+argv（Argument Vector）: 是一个字符串数组，包含了所有的命令行参数。它是传递给 main 函数的第二个参数。argv[0] 通常是程序的名称，argv[1] 到 argv[argc-1] 是实际的命令行参数。
+optstring
+optstring: 是一个字符串，其中的每个字符代表一个有效的选项字符。如果一个选项字符后面跟随一个冒号 :，表示这个选项需要一个参数。如果选项字符后跟随两个冒号 ::（仅在某些 getopt 实现中支持），表示这个选项的参数是可选的。
+getopt 函数的行为
+当 getopt 函数在 argv 中找到一个选项字符时，它会返回这个字符。如果这个选项需要一个参数（即在 optstring 中该选项字符后面跟随了一个冒号），getopt 将其参数设为全局变量 optarg 的值。
+
+如果 getopt 找到了一个不在 optstring 中的选项字符，或者找到了一个缺少必要参数的选项，根据 optstring 的第一个字符的不同，getopt 的行为也会有所不同：
+
+如果 optstring 的第一个字符是冒号 :，那么对于缺少参数的选项，getopt 返回 ':'；对于未知选项，getopt 返回 '?'，并且不打印任何错误消息。
+如果 optstring 的第一个字符不是冒号，那么 getopt 会返回 '?' 并打印一个错误消息到标准错误输出。
+全局变量
+optarg: 当当前选项需要一个参数时，getopt 会将 optarg 设置为指向该参数的指针。
+optind: getopt 使用 optind 来记录其下一次调用将从 argv 的哪个位置开始扫描。在第一次调用 getopt 之前，optind 通常被初始化为 1。当所有选项都被处理完毕后，optind 会指向第一个非选项的 argv 元素。
+opterr: 是一个标志，告诉 getopt 当遇到错误时是否向 stderr 输出错误信息。默认情况下，opterr 被设置为 1，表示启用错误输出。如果你想禁止这种错误消息，可以将 opterr 设置为 0。
+optopt: 当 getopt 遇到一个未知选项字符或者一个缺少参数的选项时，它会将该选项字符赋值给 optopt。
+通过正确地定义 optstring 并理解 getopt 如何使用这些参数和全局变量，你可以灵活地解析和处理命令行参数。
+*/
 #include <stdio.h>
 #include <unistd.h>
 
