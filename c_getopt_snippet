@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <unistd.h>
+
+int main(int argc, char **argv) {
+    int opt;
+
+    // 定义支持的选项，冒号表示该选项后面跟随一个参数
+    while ((opt = getopt(argc, argv, "ab:c:")) != -1) {
+        switch (opt) {
+            case 'a':
+                printf("Option a\n");
+                break;
+            case 'b':
+                printf("Option b with value %s\n", optarg);
+                break;
+            case 'c':
+                printf("Option c with value %s\n", optarg);
+                break;
+            case '?':
+                // 发现未知选项或缺少选项所需的参数
+                return 1;
+            default:
+                // 不应该执行到这里
+                break;
+        }
+    }
+
+    // 这里可以处理其他非选项参数
+    for (; optind < argc; optind++) {
+        printf("Argument: %s\n", argv[optind]);
+    }
+
+    return 0;
+}
